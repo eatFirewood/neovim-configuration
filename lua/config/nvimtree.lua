@@ -1,0 +1,22 @@
+-- 文件树配置（nvim-tree）
+require('nvim-tree').setup {
+  git = {
+    enable = false,
+  },
+  view = {
+    width = {
+      min = 30,       -- 最窄宽度
+      max = 60,       -- 最宽上限，防止挤掉编辑区
+      padding = 1,    -- 右侧留白
+    },
+  },
+  renderer = {
+    -- 只含单层子文件夹的目录合并显示，减少深层嵌套视觉
+    -- 例如 src/main/java/com/example/ 合并成一行
+    group_empty = true,
+    -- 缩进引导线（│ └ 等），层级关系更清晰
+    indent_markers = {
+      enable = true,
+    },
+  },
+}

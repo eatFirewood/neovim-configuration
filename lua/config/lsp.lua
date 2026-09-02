@@ -1,0 +1,56 @@
+vim.lsp.config('*', {
+  root_markers = { '.git' },
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('my.lsp', {}),
+  callback = function(ev)
+    local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+    local picker = require('config.picker')
+
+    local map = function(mode, lhs, rhs, desc)
+      vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = desc })
+    end
+
+    map('n', 'gd', picker.lsp_definitions, 'Goto definition')
+    map('n', 'gD', vim.lsp.buf.declaration, 'Goto declaration')
+    map('n', 'gI', picker.lsp_implementations, 'Goto implementation')
+    map('n', 'gr', picker.lsp_references, 'Goto references')
+    map('n', '<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
+    map({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, 'Code action')
+    map('n', '<leader>F', function()
+      vim.lsp.buf.format({ bufnr = ev.buf, id = client.id, timeout_ms = 1000 })
+    end, 'Format buffer')
+
+    if client:supports_method('textDocument/completion') then
+      -- 内置补全默认只响应语言服务声明的字符；加入可打印字符后可在输入普通字母时自动提示。
+      local trigger_characters = {}
+      for code = 32, 126 do
+        table.insert(trigger_characters, string.char(code))
+      end
+      client.server_capabilities.completionProvider.triggerCharacters = trigger_characters
+
+      vim.lsp.completion.enable(true, client.id, ev.buf, {
+        autotrigger = true,
+      })
+      -- Ctrl-I 与 Tab 使用同一个按键码，不能同时作为补全快捷键；改用 Ctrl-K。
+      map('i', '<C-K>', vim.lsp.completion.get, 'Trigger code completion')
+    end
+
+    if client.name ~= 'jdtls' and client:supports_method('textDocument/inlayHint') then
+      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+    end
+
+    if client:supports_method('textDocument/documentColor') then
+      vim.lsp.document_color.enable(true, { bufnr = ev.buf })
+    end
+  end,
+})
+
+-- 启用已配置的语言服务；ts_ls 负责 JavaScript、TypeScript 和 React 文件。
+vim.lsp.enable({
+  'lua_ls',
+  'pyright',
+  'clangd',
+  'ts_ls',
+})
