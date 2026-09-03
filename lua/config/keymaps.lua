@@ -11,6 +11,8 @@ require('which-key').setup {
   spec = {
     { '<leader>e', desc = 'Toggle file tree' },
     { '<leader>b', desc = 'Toggle breakpoint' },
+    { '<leader>f', desc = 'Search files' },
+    { '<leader>/', desc = 'Search project text' },
     { '<leader>lg', desc = 'Open lazygit' },
     { 'g', group = 'Code navigation' },
     { 'gd', desc = 'Goto definition' },
@@ -30,6 +32,20 @@ map('n', '<leader>b', function()
   require('dap').toggle_breakpoint()
 end, {
   desc = 'Toggle breakpoint',
+})
+
+-- 搜索当前项目中的文件
+map('n', '<leader>f', function()
+  require('config.picker').files()
+end, {
+  desc = 'Search files',
+})
+
+-- 在当前项目中搜索文字（依赖 rg，由 fzf-lua 提供交互式结果和预览）
+map('n', '<leader>/', function()
+  require('config.picker').live_grep()
+end, {
+  desc = 'Search project text',
 })
 
 -- lazygit：浮动窗口打开 Git 管理界面（提交、分支、diff 等）

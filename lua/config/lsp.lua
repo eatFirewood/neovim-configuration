@@ -24,9 +24,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     if client:supports_method('textDocument/completion') then
       -- 内置补全默认只响应语言服务声明的字符；加入可打印字符后可在输入普通字母时自动提示。
+      -- 排除 # 字符：clangd 对 # 返回预处理器指令补全（ifndef 等），
+      -- 继续输入时会被自动插入，干扰 C 文件输入。#include 路径补全由 < 触发，不受影响。
       local trigger_characters = {}
       for code = 32, 126 do
-        table.insert(trigger_characters, string.char(code))
+        if code ~= 35 then  -- 35 = '#'
+          table.insert(trigger_characters, string.char(code))
+        end
       end
       client.server_capabilities.completionProvider.triggerCharacters = trigger_characters
 
