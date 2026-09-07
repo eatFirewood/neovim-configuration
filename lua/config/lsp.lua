@@ -41,6 +41,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
       map('i', '<C-K>', vim.lsp.completion.get, 'Trigger code completion')
     end
 
+    if client:supports_method('textDocument/documentHighlight') then
+      -- 光标停留片刻后，高亮当前符号在本文件中的其他引用；移动光标时清除旧高亮。
+      local highlight_group = vim.api.nvim_create_augroup(
+        'my.lsp.document_highlight.' .. ev.buf,
+        { clear = true }
+      )
+      vim.api.nvim_create_autocmd('CursorHold', {
+        buffer = ev.buf,
+        group = highlight_group,
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'BufLeave' }, {
+        buffer = ev.buf,
+        group = highlight_group,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
+
     if client.name ~= 'jdtls' and client:supports_method('textDocument/inlayHint') then
       vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
     end

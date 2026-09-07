@@ -18,6 +18,11 @@ require('nvim-tree').setup {
   git = {
     enable = false,
   },
+  -- 切换到文件时，文件树自动展开目录并选中当前文件。
+  update_focused_file = {
+    enable = true,
+    update_root = false,
+  },
   view = {
     width = {
       min = 30,       -- 最窄宽度

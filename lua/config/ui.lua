@@ -13,6 +13,7 @@ vim.cmd.colorscheme('tokyonight-night')
 vim.opt.number = true          -- 显示行号
 vim.opt.relativenumber = true  -- 相对行号（便于跳转）
 vim.opt.cursorline = true       -- 高亮光标所在行
+vim.opt.updatetime = 300        -- 光标停留约 300ms 后触发符号引用高亮
 vim.opt.signcolumn = 'yes'      -- 始终显示左侧图标列（断点、诊断等）
 vim.opt.wrap = false            -- 不自动折行，超长行水平滚动查看
 
