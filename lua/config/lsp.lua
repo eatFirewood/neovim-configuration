@@ -24,9 +24,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     if client:supports_method('textDocument/completion') then
       -- 内置补全默认只响应语言服务声明的字符；加入可打印字符后可在输入普通字母时自动提示。
+      -- 排除 # 字符：clangd 对 # 返回预处理器指令补全（ifndef 等），
+      -- 继续输入时会被自动插入，干扰 C 文件输入。#include 路径补全由 < 触发，不受影响。
       local trigger_characters = {}
       for code = 32, 126 do
-        table.insert(trigger_characters, string.char(code))
+        if code ~= 35 then  -- 35 = '#'
+          table.insert(trigger_characters, string.char(code))
+        end
       end
       client.server_capabilities.completionProvider.triggerCharacters = trigger_characters
 
@@ -35,6 +39,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
       -- Ctrl-I 与 Tab 使用同一个按键码，不能同时作为补全快捷键；改用 Ctrl-K。
       map('i', '<C-K>', vim.lsp.completion.get, 'Trigger code completion')
+    end
+
+    if client:supports_method('textDocument/documentHighlight') then
+      -- 光标停留片刻后，高亮当前符号在本文件中的其他引用；移动光标时清除旧高亮。
+      local highlight_group = vim.api.nvim_create_augroup(
+        'my.lsp.document_highlight.' .. ev.buf,
+        { clear = true }
+      )
+      vim.api.nvim_create_autocmd('CursorHold', {
+        buffer = ev.buf,
+        group = highlight_group,
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'BufLeave' }, {
+        buffer = ev.buf,
+        group = highlight_group,
+        callback = vim.lsp.buf.clear_references,
+      })
     end
 
     if client.name ~= 'jdtls' and client:supports_method('textDocument/inlayHint') then

@@ -3,14 +3,26 @@
 
 vim.opt.termguicolors = true  -- 开启真彩色（终端支持时），否则颜色降级到 256 色，很灰
 
+-- 补全弹窗：menuone 显示候选（单个匹配也显示）、popup 显示说明窗口；
+-- noselect 保证弹窗出现时不预选任何条目（否则输入时第一条会被回车/空格直接插入）
+vim.opt.completeopt = 'menuone,noselect,popup'
+
 -- 主题（tokyonight，自带完整的 LSP 语义高亮配色，无需手动指定颜色）
 vim.cmd.colorscheme('tokyonight-night')
 
 vim.opt.number = true          -- 显示行号
 vim.opt.relativenumber = true  -- 相对行号（便于跳转）
 vim.opt.cursorline = true       -- 高亮光标所在行
+vim.opt.updatetime = 300        -- 光标停留约 300ms 后触发符号引用高亮
 vim.opt.signcolumn = 'yes'      -- 始终显示左侧图标列（断点、诊断等）
 vim.opt.wrap = false            -- 不自动折行，超长行水平滚动查看
+
+-- 缩进：Tab 显示为 4 列，自动缩进和连续按 Tab 也使用 4 列。
+-- 不开启 expandtab，避免 Makefile 的命令行被转换成空格。
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = false
 
 -- 诊断信息显示样式（诊断信息来自 LSP、语法检查等）
 vim.diagnostic.config({

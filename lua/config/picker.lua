@@ -8,6 +8,10 @@ local function notify_fallback()
   vim.notify('fzf 未安装，已回退到 Neovim 内置 LSP 跳转。安装后可恢复预览：sudo pacman -S fzf', vim.log.levels.WARN)
 end
 
+local function project_root()
+  return vim.fs.root(0, { '.git' }) or vim.fn.getcwd()
+end
+
 function M.setup()
   require('fzf-lua').setup {
     fzf_colors = true,
@@ -77,6 +81,7 @@ function M.files()
   if has_fzf() then
     require('fzf-lua').files({
       file_icons = false,
+      cwd = project_root(),
       cwd_prompt = false,
     })
     return
@@ -85,7 +90,12 @@ function M.files()
 end
 
 function M.live_grep()
-  require('fzf-lua').live_grep()
+  if vim.fn.executable('rg') ~= 1 then
+    vim.notify('未找到 rg，无法搜索项目文字。请先安装 ripgrep。', vim.log.levels.ERROR)
+    return
+  end
+
+  require('fzf-lua').live_grep({ cwd = project_root() })
 end
 
 return M
