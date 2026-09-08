@@ -16,7 +16,7 @@ end
 require('nvim-tree').setup {
   on_attach = on_attach,
   git = {
-    enable = false,
+    enable = true,
   },
   -- 切换到文件时，文件树自动展开目录并选中当前文件。
   update_focused_file = {
