@@ -1,5 +1,5 @@
 -- 全局键位：文件树、断点、代码跳转提示（which-key）
--- 各功能专属键位留在对应模块：LSP 跳转键在 config/lsp.lua，Java 键在 config/java.lua
+-- 各功能专属键位留在对应模块：LSP 跳转键在 config/lsp.lua，Java 键位由 nvim-java 提供
 require('which-key').setup {
   triggers = {
     { '<leader>', mode = { 'n', 'v' } },

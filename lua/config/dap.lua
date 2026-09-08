@@ -1,5 +1,5 @@
 -- nvim-dap 初始化：按键映射 + 调试面板（nvim-dap-ui）
--- Java 的调试适配由 lua/config/java.lua 按 nvim-jdtls 官方文档接入。
+-- Java 的调试适配由 nvim-java 管理（已内置 nvim-dap 自动配置）。
 local M = {}
 
 function M.setup()
