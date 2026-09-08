@@ -15,7 +15,7 @@ vim.pack.add({
   'https://github.com/JavaHello/spring-boot.nvim',
   'https://github.com/MunifTanjim/nui.nvim',
   'https://github.com/nvim-java/nvim-java',
-})
+)
 
 -- 各模块的配置脚本都移到 lua/config/ 下，这里只负责加载
 require('config.picker').setup()   -- fzf-lua（预览窗口、鼠标修复等）
@@ -27,8 +27,8 @@ require('config.keymaps')
 require('config.lsp')
 require('config.dap').setup()
 
--- Java（官方示例）
+-- Java（nvim-java）
 require('java').setup({
-  spring_boot_tools = { enable = false },
+  spring_boot_tools = { enable = true },
 })
 vim.lsp.enable('jdtls')
