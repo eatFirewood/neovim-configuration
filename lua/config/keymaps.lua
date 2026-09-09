@@ -13,7 +13,6 @@ require('which-key').setup {
     { '<leader>b', desc = 'Toggle breakpoint' },
     { '<leader>f', desc = 'Search files' },
     { '<leader>/', desc = 'Search project text' },
-    { '<leader>lg', desc = 'Open lazygit' },
     { 'g', group = 'Code navigation' },
     { 'gd', desc = 'Goto definition' },
     { 'gD', desc = 'Goto declaration' },
@@ -46,11 +45,6 @@ map('n', '<leader>/', function()
   require('config.picker').live_grep()
 end, {
   desc = 'Search project text',
-})
-
--- lazygit：浮动窗口打开 Git 管理界面（提交、分支、diff 等）
-map('n', '<leader>lg', '<cmd>LazyGit<CR>', {
-  desc = 'Open lazygit',
 })
 
 -- 快捷跳转（flash.nvim）：输入字符后，所有候选位置标出标签，按标签键直接跳转

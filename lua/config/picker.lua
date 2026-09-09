@@ -25,7 +25,7 @@ function M.setup()
         vertical = 'down:45%',
         horizontal = 'right:60%',
         title = true,
-        scrollbar = 'float',
+        scrollbar = 'border',
         delay = 20,
         winopts = {
           number = true,
