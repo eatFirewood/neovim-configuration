@@ -25,12 +25,14 @@ local map = vim.keymap.set
 
 map('n', '<leader>e', '<cmd>NvimTreeToggle<CR>', {
   desc = 'Toggle file tree',
+  nowait = true,
 })
 
 map('n', '<leader>b', function()
   require('dap').toggle_breakpoint()
 end, {
   desc = 'Toggle breakpoint',
+  nowait = true,
 })
 
 -- 搜索当前项目中的文件
@@ -38,6 +40,7 @@ map('n', '<leader>f', function()
   require('config.picker').files()
 end, {
   desc = 'Search files',
+  nowait = true,
 })
 
 -- 在当前项目中搜索文字（依赖 rg，由 fzf-lua 提供交互式结果和预览）
@@ -45,6 +48,7 @@ map('n', '<leader>/', function()
   require('config.picker').live_grep()
 end, {
   desc = 'Search project text',
+  nowait = true,
 })
 
 -- 快捷跳转（flash.nvim）：输入字符后，所有候选位置标出标签，按标签键直接跳转

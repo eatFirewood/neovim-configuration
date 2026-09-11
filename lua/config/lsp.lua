@@ -59,10 +59,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
-    if client.name ~= 'jdtls' and client:supports_method('textDocument/inlayHint') then
-      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
-    end
-
     if client:supports_method('textDocument/documentColor') then
       vim.lsp.document_color.enable(true, { bufnr = ev.buf })
     end

@@ -12,7 +12,10 @@ vim.pack.add({
   'https://github.com/folke/flash.nvim',
   'https://github.com/folke/tokyonight.nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
-  'https://github.com/JavaHello/spring-boot.nvim',
+  {
+    src = 'https://github.com/JavaHello/spring-boot.nvim',
+    version = '218c0c26c14d99feca778e4d13f5ec3e8b1b60f0',
+  },
   'https://github.com/MunifTanjim/nui.nvim',
   'https://github.com/nvim-java/nvim-java',
 })
