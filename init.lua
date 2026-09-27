@@ -31,4 +31,31 @@ require('config.dap').setup()
 require('java').setup({
   spring_boot_tools = { enable = false },
 })
+
+-- 改完 pom.xml 后 jdtls 自动重新导入，需要补两项（nvim-java 只负责启动参数）：
+-- 1) Neovim 在 Linux 上把 workspace/didChangeWatchedFiles.dynamicRegistration 硬编码为 false
+--    （runtime/lua/vim/lsp/protocol.lua 里 `sysname == 'Darwin' or sysname == 'Windows_NT'`），
+--    导致 jdtls 注册的 `**/pom.xml` 监听被整段丢弃，jdtls 永远收不到 pom 变更通知。
+--    这里手动覆盖成 true，Neovim 才会真正去注册 watcher 并发 didChangeWatchedFiles。
+-- 2) jdtls 默认 java.configuration.updateBuildConfiguration = "interactive"，会通过
+--    language/actionableNotification 让客户端弹「是否同步 classpath」按钮，
+--    Neovim 没有该 method 的 handler（nvim-java 也没实现），弹不出来。
+--    设为 automatic 后 jdtls 直接重新导入，不再询问客户端。
+-- 注：多模块工程还要装 inotify-tools（提供 inotifywait），否则 Neovim 的
+--    watchdirs 回退只监听根目录一层，子模块的 pom.xml 收不到事件。
+vim.lsp.config('jdtls', {
+  capabilities = {
+    workspace = {
+      didChangeWatchedFiles = { dynamicRegistration = true },
+    },
+  },
+  settings = {
+    java = {
+      configuration = {
+        updateBuildConfiguration = 'automatic',
+      },
+    },
+  },
+})
+
 vim.lsp.enable('jdtls')

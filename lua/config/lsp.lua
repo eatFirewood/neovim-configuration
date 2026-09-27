@@ -69,10 +69,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- 启用已配置的语言服务；ts_ls 负责 JavaScript、TypeScript 和 React 文件。
+-- 启用已配置的语言服务；tsc 使用 TypeScript 7+ 原生 LSP，支持 JS/TS 和 React。
 vim.lsp.enable({
   'lua_ls',
   'pyright',
   'clangd',
-  'ts_ls',
+  'tsc',
+  'elixirls',
+  'racket_langserver',
 })
