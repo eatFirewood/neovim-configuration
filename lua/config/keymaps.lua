@@ -1,9 +1,10 @@
 -- 全局键位：文件树、断点、代码跳转提示（which-key）
 -- 各功能专属键位留在对应模块：LSP 跳转键在 config/lsp.lua，Java 键位由 nvim-java 提供
+vim.o.timeoutlen = 1000
+
 require('which-key').setup {
   triggers = {
-    { '<leader>', mode = { 'n', 'v' } },
-    { 'g', mode = { 'n', 'v' } },
+    { '<auto>', mode = { 'n', 'v' } },
   },
   presets = {
     g = false,
@@ -13,11 +14,6 @@ require('which-key').setup {
     { '<leader>b', desc = 'Toggle breakpoint' },
     { '<leader>f', desc = 'Search files' },
     { '<leader>/', desc = 'Search project text' },
-    { 'g', group = 'Code navigation' },
-    { 'gd', desc = 'Goto definition' },
-    { 'gD', desc = 'Goto declaration' },
-    { 'gI', desc = 'Goto implementation' },
-    { 'gr', desc = 'Goto references' },
   },
 }
 
