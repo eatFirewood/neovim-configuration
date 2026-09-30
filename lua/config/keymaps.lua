@@ -1,5 +1,5 @@
--- 全局键位：文件树、断点、代码跳转提示（which-key）
--- 各功能专属键位留在对应模块：LSP 跳转键在 config/lsp.lua，Java 键位由 nvim-java 提供
+-- 全局键位：文件树、搜索、代码跳转提示（which-key）
+-- 各功能专属键位留在对应模块：调试键在 config/dap.lua，LSP 跳转键在 config/lsp.lua，Java 键位由 nvim-java 提供
 require('which-key').setup {
   triggers = {
     { '<leader>', mode = { 'n', 'v' } },
@@ -11,6 +11,7 @@ require('which-key').setup {
   spec = {
     { '<leader>e', desc = 'Toggle file tree' },
     { '<leader>b', desc = 'Toggle breakpoint' },
+    { '<leader>d', group = 'Debug' },
     { '<leader>f', desc = 'Search files' },
     { '<leader>/', desc = 'Search project text' },
     { '<leader>lg', desc = 'Open lazygit' },
@@ -28,11 +29,7 @@ map('n', '<leader>e', '<cmd>NvimTreeToggle<CR>', {
   desc = 'Toggle file tree',
 })
 
-map('n', '<leader>b', function()
-  require('dap').toggle_breakpoint()
-end, {
-  desc = 'Toggle breakpoint',
-})
+-- 断点键 `<leader>b` 已统一放到 config/dap.lua（官方 dap-mappings 的写法）
 
 -- 搜索当前项目中的文件
 map('n', '<leader>f', function()

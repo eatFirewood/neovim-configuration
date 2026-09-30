@@ -6,7 +6,8 @@ vim.pack.add({
   'https://github.com/stevearc/quicker.nvim',
   'https://github.com/nvim-tree/nvim-tree.lua',
   'https://github.com/mfussenegger/nvim-dap',
-  'https://github.com/rcarriga/nvim-dap-ui',
+  -- 调试界面：零依赖（不像 nvim-dap-ui 还需要 nvim-nio）
+  'https://github.com/igorlfs/nvim-dap-view',
   'https://github.com/nvim-tree/nvim-web-devicons',
   'https://github.com/folke/which-key.nvim',
   'https://github.com/folke/flash.nvim',
